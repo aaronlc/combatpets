@@ -18,8 +18,9 @@
 class StartGame
 
    def gamePrompt
+
         system("clear")
-        puts "Welcome to the Ruby Pet Game!"
+        puts "Welcome to Combat Pets!"
         puts "Would you like to: "
         puts "1: Start a new pet "
         puts "2: Load an existing pet "
@@ -51,9 +52,22 @@ class StartGame
         end
 
         puts "What type of pet do you want #{name} to be?"
+	puts "1: Dog"
+	puts "2: Cat"
+	puts "3: Squirrel"
         print "> "
-        type = gets.chomp()
+	getType = gets.chomp()
 
+	if getType == "1"
+	   type = "Dog"
+	elsif getType == "2"
+	   type = "Cat"
+	elsif getType == "3"
+	   type = "Squrrel"
+	else
+	   puts "That is not a valid option."
+	   createNewPet("#{name}")
+	end
 
         # Create newPet
         newPet = Pet.new("#{name}", "#{type}", 25)
@@ -85,10 +99,10 @@ class StartGame
            type = loadInfo[1].chomp
            hitpoints = loadInfo[2].to_i
            # Create pet
-           loadPet = Pet.new(name, type, hitpoints)
+           reloadPet = Pet.new(name, type, hitpoints)
            system("clear")
            # Call menu
-           loadPet.petMenu
+           reloadPet.petMenu
         end
    end
 
@@ -97,10 +111,12 @@ end
 
 class Battle
 
-   def initialize(pet1Name, pet1Hp, pet2Name, pet2Hp)
+   def initialize(pet1Name, pet1Type, pet1Hp, pet2Name, pet2Type, pet2Hp)
         @pet1Name = pet1Name
+	@pet1type = pet1Type
         @pet1Hp = pet1Hp
         @pet2Name = pet2Name
+	@pet2Type = pet2Type
         @pet2Hp = pet2Hp
    end
 
@@ -116,8 +132,14 @@ class Battle
            @pet2Hp = @pet2Hp - @hit1
 
            if @pet1Hp <= 0
-                TrashTalk(@pet2Name, @pet1Name)
-           elsif @pet2Hp <= 0
+                puts "#{@pet1Name} has #{@pet1Hp} hitpoints remaining!"
+                puts "#{@pet2Name} has #{@pet2Hp} hitpoints remaining!"
+		puts ""
+		TrashTalk(@pet2Name, @pet1Name)
+           elsif @pet2Hp <= 0                
+                puts "#{@pet1Name} has #{@pet1Hp} hitpoints remaining!"
+                puts "#{@pet2Name} has #{@pet2Hp} hitpoints remaining!"
+		puts ""
                 TrashTalk(@pet1Name, @pet2Name)
            elsif @pet1Hp <= 0 and @pet2Hp <= 0
                 puts "#{@pet1Name} and #{@pet2Name} both fall down defeated!"
@@ -125,6 +147,7 @@ class Battle
                 puts "#{@pet1Name} has #{@pet1Hp} hitpoints remaining!"
                 puts "#{@pet2Name} has #{@pet2Hp} hitpoints remaining!"
                 puts "They live to fight another round!!!"
+		puts ""
            end
         end
 	
@@ -133,19 +156,20 @@ class Battle
 	@pet2Hp = 25
 	
 	# Call pet menu, but how?!?!
-	#loadPet.petMenu
+	postFight = Pet.new(@pet1Name, @pet1Type, @pet1Hp)
+	postFight.petMenu
    end
 
    def  TrashTalk(winningPet, losingPet)
 
-        phrase = 1 + rand (5)
+        phrase = 1 + rand(5)
 
         if phrase == 1
            puts "#{winningPet} destroys #{losingPet}!
         elsif @phrase == 2
            puts "#{losingPet} falls defeated at the feet of the #{winningPet}"
         elsif @phrase == 3
-           puts "#{winningPet} jeers at the dead body of #{winningPet}"
+           puts "#{winningPet} jeers at the dead body of #{losingPet}"
         elsif @phrase == 4
            puts "#{losingPet} crumples beneath the force of #{winningPet}"
         else
@@ -187,7 +211,8 @@ class Pet
         choice = gets.chomp()
 
         if choice == "1"
-           newFight = Battle.new(@name, @hitpoints, "Fred", 25)
+	   # Temp value for AI opponent		
+           newFight = Battle.new(@name, @type, @hitpoints, "Fred", @type, 25)
 	   newFight.fight
         elsif choice == "2"
            StartGame.createNewPet(" ")
@@ -210,16 +235,7 @@ class Pet
         loadPetFile.write("\n")
         loadPetFile.write(@type)
         loadPetFile.write("\n")
-        loadPetFile.write(@hunger)
-        loadPetFile.write("\n")
-        loadPetFile.write(@thirst)
-        loadPetFile.write("\n")
-        loadPetFile.write(@bio)
-        loadPetFile.write("\n")
-        loadPetFile.write(@rest)
-        loadPetFile.write("\n")
-        loadPetFile.write(@happiness)
-        loadPetFile.close()
+        loadPetFile.write(@hitpoints)
 	
         puts "Goodbye!"
         exit
