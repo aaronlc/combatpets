@@ -11,7 +11,7 @@ require 'rubygems'
 require 'mysql'
 require 'digest/sha2'
 
-@@con = Mysql.new('localhost', 'combatPets', 'evo123!!', 'combatPetsDatabase')
+@@con = Mysql.new('localhost', 'combatPets', 'xxxxxx', 'combatPetsDatabase')
 
 class UserManage
 
