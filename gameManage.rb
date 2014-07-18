@@ -17,7 +17,7 @@
 
 require_relative 'userManage'
 
-@@con = Mysql.new('localhost', 'combatPets', 'evo123!!', 'combatPetsDatabase')
+@@con = Mysql.new('localhost', 'combatPets', 'xxxxxxxx', 'combatPetsDatabase')
 
 class StartGame
 
