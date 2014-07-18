@@ -3,7 +3,7 @@ require 'mysql'
 require 'digest/sha2'
 #require_relative 'gameManage'
 
-@@con = Mysql.new('localhost', 'combatPets', 'evo123!!', 'combatPetsDatabase')
+@@con = Mysql.new('localhost', 'combatPets', 'xxxxxxxxx', 'combatPetsDatabase')
 
 class UserManage
 
